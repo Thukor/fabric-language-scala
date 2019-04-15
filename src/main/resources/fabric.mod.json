@@ -2,5 +2,8 @@
   "id": "fabric-language-scala",
   "name": "Fabric Language Scala",
   "description": "Fabric language module for Scala.",
+   "languageAdapter": {
+    "scala": "net.fabricmc.language.scala.ScalaLanguageAdapter"
+  }
   "version": "$version"
 }
