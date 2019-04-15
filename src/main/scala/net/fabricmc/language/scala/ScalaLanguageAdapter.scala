@@ -20,11 +20,13 @@ import net.fabricmc.loader.launch.common.FabricLauncherBase
 
 class ScalaLanguageAdapter extends LanguageAdapter {
 	def create[T](modContainer: ModContainer, value: String, clazz: Class[T]): T = {
+		
+		println(value)
 		val components = value.split("::")
 
 		if(components.size >= 3) throw new LanguageAdapterException("Invalid handle format: " + value)
 
-		val c = Class.forName(components(0), true, FabricLauncherBase.getLauncher().getTargetClassLoader())
+		val c = Class.forName(components(0) + "$", true, FabricLauncherBase.getLauncher().getTargetClassLoader())
 
 		c.getDeclaredConstructor().newInstance().asInstanceOf[T]
 	}
