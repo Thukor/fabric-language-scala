@@ -1,9 +1,16 @@
 {
+  "schemaVersion": 1,
   "id": "fabric-language-scala",
+  "version": "0.1",
   "name": "Fabric Language Scala",
   "description": "Fabric language module for Scala.",
-   "languageAdapter": {
+  "authors": [
+    ""
+  ],
+  "contact": {
+  },
+  "languageAdapters": {
     "scala": "net.fabricmc.language.scala.ScalaLanguageAdapter"
-  }
-  "version": "$version"
+  },
+  "license": "Apache-2.0"
 }
