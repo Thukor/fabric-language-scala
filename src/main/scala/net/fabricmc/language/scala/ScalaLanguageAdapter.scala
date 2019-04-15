@@ -15,30 +15,18 @@
  */
 
 package net.fabricmc.language.scala
-
-
-import net.fabricmc.loader.language.LanguageAdapter
-import net.fabricmc.loader.language.LanguageAdapter.Options
-import org.apache.logging.log4j.LogManager
+import net.fabricmc.loader.api.{LanguageAdapter, LanguageAdapterException, ModContainer}
+import net.fabricmc.loader.launch.common.FabricLauncherBase
 
 class ScalaLanguageAdapter extends LanguageAdapter {
+	def create[T](modContainer: ModContainer, value: String, clazz: Class[T]): T = {
+		val components = value.split("::")
 
-	private val logger = LogManager.getFormatterLogger("ScalaLanguageAdapter")
+		if(components.size >= 3) throw new LanguageAdapterException("Invalid handle format: " + value)
 
-	override def createInstance(clazz: Class[_], options: Options): AnyRef = {
-		try {
-			val objectClass = Class.forName(clazz.getName + "$")
-			val moduleField = objectClass.getField("MODULE$")
-			val instance = moduleField.get(null)
-			if (instance == null) throw new NullPointerException
-			logger.debug(s"Found ${clazz.getName}$$MODULE$$")
-			instance
-		} catch {
-			case e: Exception => {
-				logger.error(s"Unable to find ${clazz.getName}$$MODULE$$")
-				clazz.newInstance().asInstanceOf[AnyRef]
-			}
-		}
+		val c = Class.forName(components(0), true, FabricLauncherBase.getLauncher().getTargetClassLoader())
+
+		c.getDeclaredConstructor().newInstance().asInstanceOf[T]
 	}
-
 }
+
